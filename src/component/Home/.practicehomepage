@@ -1,0 +1,82 @@
+const HomePage = ({ activeTab }) => {
+  const [data, setData] = useState({
+    page_home_items: [],
+    listing_categories: [],
+    listing_locations: [],
+    listings: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        let response;
+
+        if (activeTab === "ai-companies") {
+          response = await axios.get("http://127.0.0.1:8000/api/ai/service");
+          setData(response.data);
+        } else if (activeTab === "ai-services") {
+          response = await axios.get("http://127.0.0.1:8000/api/ai/services");
+          setData(response.data);
+        } else if (activeTab === "ai-tool") {
+          response = await axios.get("http://127.0.0.1:8000/api/ai/tools");
+          setData(response.data);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [activeTab]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <>
+      <div className="data-container">
+        {activeTab === "ai-companies" && (
+          <div className="data-list">
+            {data.listings.data.map((company, index) => (
+              <div key={index} className="data-item m-5">
+                <h3>{company.listing_name}</h3>
+                <p>Region: {company.region}</p>
+                <p>Technology: {company.technology}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {activeTab === "ai-services" && (
+          <div className="data-list">
+            {data.listing_categories.data.map((service, index) => (
+              <div key={index} className="data-item">
+                <h3>{service.name}</h3>
+                <p>Location: {service.listing_category_name}</p>
+                <p>Category: {service.listing_category_slug}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {activeTab === "ai-tool" && (
+          <div className="data-list">
+            {Array.isArray(data) &&
+              data.map((tool) => (
+                <div key={tool.id} className="data-item">
+                  <h3>{tool.name}</h3>
+                  <p>Company: {tool.company}</p>
+                  <p>Platform: {tool.platform}</p>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+      
+    </>
+  );
+};

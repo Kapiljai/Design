@@ -1,0 +1,70 @@
+.otp-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+    opacity: 0; 
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none; 
+}
+
+.otp-popup.show {
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+    pointer-events: auto; 
+}
+
+.otp-popup.hide {
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0.8); 
+}
+
+.otp-container {
+    text-align: center;
+}
+
+.otp-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.otp-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.btn-submit, .btn-resend {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-resend:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.otp-timer {
+    margin-top: 10px;
+}
